@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace PersonalBlog.Models;
 
 [Index(nameof(Email), IsUnique = true)]
-[Table("usuarios")]
+[Table("User")]
 public class User
 {
     [Key]

@@ -39,5 +39,5 @@ public class Post
     public string? TagsIA { get; set; }
 
     [Column(TypeName = "varchar(255)")]
-    public string? CategoriaIA { get; set; }
+    public string? CatagoryIA { get; set; }
 }

@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonalBlog.Models;
 
-[Table("temas")]
-public class Tema
+[Table("Topic")]
+public class Topic
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
