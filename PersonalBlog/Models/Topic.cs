@@ -1,6 +1,19 @@
-﻿namespace PersonalBlog.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class Topic
+namespace PersonalBlog.Models;
+
+[Table("temas")]
+public class Tema
 {
-    
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public long Id { get; set; }
+
+    [Required]
+    [StringLength(255)]
+    [Column(TypeName = "varchar(255)")]
+    public string Descricao { get; set; } = string.Empty;
+
+    public ICollection<Post> Posts { get; set; } = new List<Post>();
 }
