@@ -1,10 +1,13 @@
-using PersonalBlog.Models;
+using PersonalBlog.DTOs.Topic;
 
 namespace PersonalBlog.Services;
 
+
 public interface ITopicService
 {
-    Task<Topic> CreateTopicAsync(Topic topic);
-    Task<Topic> UpdateTopic(Topic topic);
-    Task<int> DeleteTopic(long id);
+    Task<ResponseTopicDto> CreateTopicAsync(CreateTopicDto topicDto);
+    Task<ResponseTopicDto> UpdateTopicAsync(UpdateTopicDto topicDto);
+    Task DeleteTopicAsync(long id);
+    Task<ResponseTopicDto> FindTopicAsync(long id);
+    Task<List<ResponseTopicDto>> GetAllTopicsAsync();
 }

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PersonalBlog.Data;
-using PersonalBlog.Services;
+using PersonalBlog.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDBContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<ITopicService,TopicService>();
+builder.Services.AddScoped<ITopicRepository, TopicRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
