@@ -13,14 +13,14 @@ public class Post
     [Required]
     [StringLength(100)]
     [Column(TypeName = "varchar(100)")]
-    public string Titulo { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
 
     [Required]
     [Column(TypeName = "text")]
-    public string Texto { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime Data { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey(nameof(User))]
     public long UserId { get; set; }
@@ -33,11 +33,11 @@ public class Post
     public Topic? Topic { get; set; }
 
     [Column(TypeName = "text")]
-    public string? ResumoIA { get; set; }
+    public string? AiSummary { get; set; }
 
     [Column(TypeName = "text")]
-    public string? TagsIA { get; set; }
+    public string? AiTags { get; set; }
 
     [Column(TypeName = "varchar(255)")]
-    public string? CatagoryIA { get; set; }
+    public string? AiCategory { get; set; }
 }

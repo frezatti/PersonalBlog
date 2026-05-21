@@ -8,8 +8,8 @@ public class AppDBContext : DbContext
     public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
     { }
 
-    public DbSet<Post> Post => Set<Post>();
-    public DbSet<User> User => Set<User>();
-    public DbSet<Topic> Topic => Set<Topic>();
+    public DbSet<Post> Posts => Set<Post>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Topic> Topics => Set<Topic>();
 
 }

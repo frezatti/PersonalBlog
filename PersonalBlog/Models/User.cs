@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using PersonalBlog.Models.Enums;
 
 namespace PersonalBlog.Models;
 
@@ -15,7 +16,7 @@ public class User
     [Required]
     [StringLength(255)]
     [Column(TypeName = "varchar(255)")]
-    public string Nome { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
     [Required]
     [EmailAddress]
@@ -25,12 +26,13 @@ public class User
 
     [Required]
     [Column(TypeName = "text")]
-    public string Senha { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 
     [Required]
     [StringLength(50)]
     [Column(TypeName = "varchar(50)")]
-    public string Tipo { get; set; } = "User";
+    public UserType Type { get; set; } = UserType.User;
 
-    public ICollection<Post> Postagens { get; set; } = new List<Post>();
+    public ICollection<Post> Posts { get; set; } = new List<Post>();
+
 }

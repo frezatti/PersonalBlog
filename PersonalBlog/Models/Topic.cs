@@ -13,7 +13,7 @@ public class Topic
     [Required]
     [StringLength(255)]
     [Column(TypeName = "varchar(255)")]
-    public string Descricao { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
 
     public ICollection<Post> Posts { get; set; } = new List<Post>();
 }
