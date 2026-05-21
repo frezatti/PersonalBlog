@@ -29,8 +29,6 @@ public class User
     public string Password { get; set; } = string.Empty;
 
     [Required]
-    [StringLength(50)]
-    [Column(TypeName = "varchar(50)")]
     public UserType Type { get; set; } = UserType.User;
 
     public ICollection<Post> Posts { get; set; } = new List<Post>();

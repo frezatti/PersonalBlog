@@ -19,7 +19,6 @@ public class Post
     [Column(TypeName = "text")]
     public string Content { get; set; } = string.Empty;
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey(nameof(User))]
