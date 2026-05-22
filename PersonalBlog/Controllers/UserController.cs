@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.DTOs.User;
 using PersonalBlog.DTOs.Auth;
 using PersonalBlog.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalBlog.Controllers;
 
@@ -10,6 +11,7 @@ namespace PersonalBlog.Controllers;
 public class UsersController(IUserService userService, IAuthService authService) : ControllerBase
 {
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<ResponseLoginDto>> Login([FromBody] LoginDto loginDto)
     {
@@ -32,6 +34,8 @@ public class UsersController(IUserService userService, IAuthService authService)
             return Unauthorized(new { message = exception.Message });
         }
     }
+
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<ActionResult<List<ResponseUserDto>>> GetAllUsers()
     {
@@ -40,6 +44,7 @@ public class UsersController(IUserService userService, IAuthService authService)
         return Ok(users);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("{id:long}")]
     public async Task<ActionResult<ResponseUserDto>> FindUserById(long id)
     {
@@ -77,12 +82,9 @@ public class UsersController(IUserService userService, IAuthService authService)
             return BadRequest(new { message = exception.Message });
         }
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:long}")]
-    public async Task<ActionResult<ResponseUserDto>> UpdateUser(
-        long id,
-        [FromBody] UpdateUserDto userDto
-    )
+    public async Task<ActionResult<ResponseUserDto>> UpdateUser(long id, [FromBody] UpdateUserDto userDto)
     {
         try
         {
@@ -102,6 +104,7 @@ public class UsersController(IUserService userService, IAuthService authService)
         }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> DeleteUser(long id)
     {

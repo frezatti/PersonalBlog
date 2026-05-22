@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.DTOs.Post;
 using PersonalBlog.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalBlog.Controllers;
 
@@ -15,6 +16,7 @@ public class PostsController : ControllerBase
         _postService = postService;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<List<PostResponseDto>>> GetAllPosts()
     {
@@ -23,6 +25,7 @@ public class PostsController : ControllerBase
         return Ok(posts);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id:long}")]
     public async Task<ActionResult<PostResponseDto>> FindPostById(long id)
     {
@@ -42,6 +45,7 @@ public class PostsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<PostResponseDto>> CreatePost([FromBody] CreatePostDto postDto)
     {
@@ -65,11 +69,9 @@ public class PostsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id:long}")]
-    public async Task<ActionResult<PostResponseDto>> UpdatePost(
-        long id,
-        [FromBody] UpdatePostDto postDto
-    )
+    public async Task<ActionResult<PostResponseDto>> UpdatePost(long id, [FromBody] UpdatePostDto postDto)
     {
         try
         {
@@ -89,6 +91,7 @@ public class PostsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> DeletePost(long id)
     {

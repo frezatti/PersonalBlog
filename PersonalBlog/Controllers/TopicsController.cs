@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.DTOs.Topic;
 using PersonalBlog.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalBlog.Controllers;
 
@@ -15,6 +16,7 @@ public class TopicsController : ControllerBase
         _topicService = topicService;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<List<ResponseTopicDto>>> GetAllTopics()
     {
@@ -22,7 +24,7 @@ public class TopicsController : ControllerBase
 
         return Ok(topics);
     }
-
+    [AllowAnonymous]
     [HttpGet("{id:long}")]
     public async Task<ActionResult<ResponseTopicDto>> FindTopicById(long id)
     {
@@ -38,6 +40,7 @@ public class TopicsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<ResponseTopicDto>> CreateTopic([FromBody] CreateTopicDto topicDto)
     {
@@ -57,11 +60,9 @@ public class TopicsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id:long}")]
-    public async Task<ActionResult<ResponseTopicDto>> UpdateTopic(
-        long id,
-        [FromBody] UpdateTopicDto topicDto
-    )
+    public async Task<ActionResult<ResponseTopicDto>> UpdateTopic(long id, [FromBody] UpdateTopicDto topicDto)
     {
         try
         {
@@ -81,6 +82,7 @@ public class TopicsController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> DeleteTopic(long id)
     {
