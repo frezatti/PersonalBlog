@@ -4,9 +4,9 @@ using PersonalBlog.Models;
 
 namespace PersonalBlog.Repositories;
 
-public class PostRepository(AppDBContext context): IPostRepository
+public class PostRepository(AppDBContext context) : IPostRepository
 {
-    
+
     public async Task<Post> CreatePostAsync(Post post)
     {
         context.Posts.Add(post);
@@ -21,8 +21,9 @@ public class PostRepository(AppDBContext context): IPostRepository
             .Where(x => x.Id == post.Id)
             .ExecuteUpdateAsync(setters => setters
                 .SetProperty(dbPost => dbPost.Title, post.Title)
-                .SetProperty(dbPost => dbPost.Content, post.Content));
-        
+                .SetProperty(dbPost => dbPost.Content, post.Content)
+                .SetProperty(dbPost => dbPost.TopicId, post.TopicId));
+
 
         return result > 0;
     }
