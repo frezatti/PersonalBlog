@@ -9,4 +9,5 @@ public interface IUserRepository
     Task<bool> DeleteUserAsync(long id);
     Task<User> FindUserAsync(long id);
     Task<List<User>> GetAllUserAsync();
+    Task<User> FindUserByEmailAsync(string email);
 }

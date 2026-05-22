@@ -45,6 +45,24 @@ public class PostRepository(AppDBContext context) : IPostRepository
         return post;
     }
 
+
+    public async Task<List<Post>> GetPostsAsync(long? userId, long? topicId)
+    {
+        var query = context.Posts
+            .AsNoTracking()
+            .Include(post => post.User)
+            .Include(post => post.Topic)
+            .AsQueryable();
+
+        if (userId is not null)
+            query = query.Where(post => post.UserId == userId);
+
+        if (topicId is not null)
+            query = query.Where(post => post.TopicId == topicId);
+
+        return await query.ToListAsync();
+    }
+
     public async Task<List<Post>> GetAllPostAsync()
     {
         return await context.Posts.AsNoTracking().ToListAsync();

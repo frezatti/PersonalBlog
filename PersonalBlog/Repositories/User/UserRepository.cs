@@ -6,6 +6,16 @@ namespace PersonalBlog.Repositories;
 
 public class UserRepository(AppDBContext context) : IUserRepository
 {
+    public async Task<User> FindUserByEmailAsync(string email)
+    {
+        var user = await context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(user => user.Email == email)
+            ?? throw new KeyNotFoundException("User not found.");
+
+        return user;
+    }
+
     public async Task<User> CreateUserAsync(User user)
     {
         context.Users.Add(user);
