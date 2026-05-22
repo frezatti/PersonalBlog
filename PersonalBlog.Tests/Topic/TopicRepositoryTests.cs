@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using PersonalBlog.Data;
 using PersonalBlog.Models;
 using PersonalBlog.Repositories;
 
@@ -7,24 +6,15 @@ namespace PersonalBlog.Tests;
 
 public class TopicRepositoryTests
 {
-    private static AppDBContext CreateContext()
+    public TopicRepositoryTests()
     {
-        var options = new DbContextOptionsBuilder<AppDBContext>()
-            .UseNpgsql("Host=localhost;Port=5432;Database=personal_blog_test_db;Username=postgres;Password=password")
-            .Options;
-
-        var context = new AppDBContext(options);
-
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
-
-        return context;
+        TestDatabase.Reset();
     }
 
     [Fact]
     public async Task CreateTopicAsync_SavesTopicInDatabase()
     {
-        await using var context = CreateContext();
+        await using var context = TestDatabase.CreateContext();
 
         var repository = new TopicRepository(context);
 
@@ -37,7 +27,11 @@ public class TopicRepositoryTests
 
         Assert.True(result.Id > 0);
 
-        var topicFromDatabase = await context.Topics.FindAsync(result.Id);
+        await using var verifyContext = TestDatabase.CreateContext();
+
+        var topicFromDatabase = await verifyContext.Topics
+            .AsNoTracking()
+            .FirstOrDefaultAsync(dbTopic => dbTopic.Id == result.Id);
 
         Assert.NotNull(topicFromDatabase);
         Assert.Equal("Technology", topicFromDatabase.Description);
@@ -46,54 +40,80 @@ public class TopicRepositoryTests
     [Fact]
     public async Task UpdateTopicAsync_UpdatesTopicInDatabase()
     {
-        await using var context = CreateContext();
+        long topicId;
 
-        context.Topics.Add(new Topic { Description = "Old description" });
-        await context.SaveChangesAsync();
-
-        var topic = await context.Topics.FirstAsync();
-
-        var repository = new TopicRepository(context);
-
-        var updated = await repository.UpdateTopicAsync(new Topic
+        await using (var arrangeContext = TestDatabase.CreateContext())
         {
-            Id = topic.Id,
-            Description = "New description"
-        });
+            arrangeContext.Topics.Add(new Topic { Description = "Old description" });
+            await arrangeContext.SaveChangesAsync();
 
-        Assert.True(updated);
+            topicId = await arrangeContext.Topics
+                .Select(topic => topic.Id)
+                .FirstAsync();
+        }
 
-        var topicFromDatabase = await context.Topics.FindAsync(topic.Id);
+        await using (var actContext = TestDatabase.CreateContext())
+        {
+            var repository = new TopicRepository(actContext);
 
-        Assert.NotNull(topicFromDatabase);
-        Assert.Equal("New description", topicFromDatabase.Description);
+            var updated = await repository.UpdateTopicAsync(new Topic
+            {
+                Id = topicId,
+                Description = "New description"
+            });
+
+            Assert.True(updated);
+        }
+
+        await using (var verifyContext = TestDatabase.CreateContext())
+        {
+            var topicFromDatabase = await verifyContext.Topics
+                .AsNoTracking()
+                .FirstOrDefaultAsync(dbTopic => dbTopic.Id == topicId);
+
+            Assert.NotNull(topicFromDatabase);
+            Assert.Equal("New description", topicFromDatabase.Description);
+        }
     }
 
     [Fact]
     public async Task DeleteTopicAsync_DeletesTopicFromDatabase()
     {
-        await using var context = CreateContext();
+        long topicId;
 
-        context.Topics.Add(new Topic { Description = "Technology" });
-        await context.SaveChangesAsync();
+        await using (var arrangeContext = TestDatabase.CreateContext())
+        {
+            arrangeContext.Topics.Add(new Topic { Description = "Technology" });
+            await arrangeContext.SaveChangesAsync();
 
-        var topic = await context.Topics.FirstAsync();
+            topicId = await arrangeContext.Topics
+                .Select(topic => topic.Id)
+                .FirstAsync();
+        }
 
-        var repository = new TopicRepository(context);
+        await using (var actContext = TestDatabase.CreateContext())
+        {
+            var repository = new TopicRepository(actContext);
 
-        var deleted = await repository.DeleteTopicAsync(topic.Id);
+            var deleted = await repository.DeleteTopicAsync(topicId);
 
-        Assert.True(deleted);
+            Assert.True(deleted);
+        }
 
-        var topicFromDatabase = await context.Topics.FindAsync(topic.Id);
+        await using (var verifyContext = TestDatabase.CreateContext())
+        {
+            var topicFromDatabase = await verifyContext.Topics
+                .AsNoTracking()
+                .FirstOrDefaultAsync(dbTopic => dbTopic.Id == topicId);
 
-        Assert.Null(topicFromDatabase);
+            Assert.Null(topicFromDatabase);
+        }
     }
 
     [Fact]
     public async Task FindTopicAsync_WhenTopicDoesNotExist_ThrowsKeyNotFoundException()
     {
-        await using var context = CreateContext();
+        await using var context = TestDatabase.CreateContext();
 
         var repository = new TopicRepository(context);
 

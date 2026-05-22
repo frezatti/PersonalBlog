@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using PersonalBlog.Data;
 using PersonalBlog.DTOs.Topic;
 using PersonalBlog.Repositories;
 using PersonalBlog.Services;
@@ -8,24 +7,15 @@ namespace PersonalBlog.Tests;
 
 public class TopicServiceIntegrationTests
 {
-    private static AppDBContext CreateContext()
+    public TopicServiceIntegrationTests()
     {
-        var options = new DbContextOptionsBuilder<AppDBContext>()
-            .UseNpgsql("Host=localhost;Port=5432;Database=personal_blog_test_db;Username=postgres;Password=password")
-            .Options;
-
-        var context = new AppDBContext(options);
-
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
-
-        return context;
+        TestDatabase.Reset();
     }
 
     [Fact]
     public async Task CreateTopicAsync_WithRealRepository_SavesTopicInDatabase()
     {
-        await using var context = CreateContext();
+        await using var context = TestDatabase.CreateContext();
 
         var repository = new TopicRepository(context);
         var service = new TopicService(repository);
@@ -38,7 +28,11 @@ public class TopicServiceIntegrationTests
         Assert.True(result.Id > 0);
         Assert.Equal("Technology", result.Description);
 
-        var topicFromDatabase = await context.Topics.FindAsync(result.Id);
+        await using var verifyContext = TestDatabase.CreateContext();
+
+        var topicFromDatabase = await verifyContext.Topics
+            .AsNoTracking()
+            .FirstOrDefaultAsync(dbTopic => dbTopic.Id == result.Id);
 
         Assert.NotNull(topicFromDatabase);
         Assert.Equal("Technology", topicFromDatabase.Description);
