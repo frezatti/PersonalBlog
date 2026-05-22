@@ -1,4 +1,4 @@
-namespace PersonalBlog.DTOs.Auth;
+namespace PersonalBlog.DTOs.User;
 
 public class UpdateUserDto
 {

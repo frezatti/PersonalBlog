@@ -4,25 +4,18 @@ using PersonalBlog.Repositories;
 
 namespace PersonalBlog.Services;
 
-public class TopicService : ITopicService
+public class TopicService(ITopicRepository topicRepository) : ITopicService
 {
-    private readonly ITopicRepository _topicRepository;
-
-    public TopicService(ITopicRepository topicRepository)
-    {
-        _topicRepository = topicRepository;
-    }
-
     public async Task<ResponseTopicDto> FindTopicAsync(long id)
     {
-        var topic = await _topicRepository.FindTopicAsync(id);
+        var topic = await topicRepository.FindTopicAsync(id);
 
         return ToResponseDto(topic);
     }
 
     public async Task<List<ResponseTopicDto>> GetAllTopicsAsync()
     {
-        var topics = await _topicRepository.GetAllTopicsAsync();
+        var topics = await topicRepository.GetAllTopicsAsync();
 
         return topics.Select(ToResponseDto).ToList();
     }
@@ -37,7 +30,7 @@ public class TopicService : ITopicService
             Description = topicDto.Description.Trim()
         };
 
-        var createdTopic = await _topicRepository.CreateTopicAsync(topic);
+        var createdTopic = await topicRepository.CreateTopicAsync(topic);
 
         return ToResponseDto(createdTopic);
     }
@@ -56,7 +49,7 @@ public class TopicService : ITopicService
             Description = topicDto.Description.Trim()
         };
 
-        var updated = await _topicRepository.UpdateTopicAsync(updatedTopic);
+        var updated = await topicRepository.UpdateTopicAsync(updatedTopic);
 
         if (!updated)
             throw new KeyNotFoundException("Topic not found.");
@@ -66,10 +59,9 @@ public class TopicService : ITopicService
 
     public async Task DeleteTopicAsync(long id)
     {
-        var deleted = await _topicRepository.DeleteTopicAsync(id);
-
-        if (!deleted)
-            throw new KeyNotFoundException("Topic not found.");
+        var deleted = await topicRepository.DeleteTopicAsync(id);
+        
+        if (!deleted) throw new KeyNotFoundException("Topic not found.");
     }
 
 

@@ -1,6 +1,6 @@
 using PersonalBlog.Models.Enums;
 
-namespace PersonalBlog.DTOs.Auth;
+namespace PersonalBlog.DTOs.User;
 
 
 public class ResponseUserDto

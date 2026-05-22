@@ -4,26 +4,19 @@ using PersonalBlog.Models;
 
 namespace PersonalBlog.Repositories;
 
-public class TopicRepository : ITopicRepository
+public class TopicRepository(AppDBContext context) : ITopicRepository
 {
-    private readonly AppDBContext _context;
-
-    public TopicRepository(AppDBContext context)
-    {
-        _context = context;
-    }
-
     public async Task<Topic> CreateTopicAsync(Topic topic)
     {
-        _context.Topics.Add(topic);
-        await _context.SaveChangesAsync();
+        context.Topics.Add(topic);
+        await context.SaveChangesAsync();
 
         return topic;
     }
 
     public async Task<bool> UpdateTopicAsync(Topic topic)
     {
-        var result = await _context.Topics
+        var result = await context.Topics
             .Where(dbTopic => dbTopic.Id == topic.Id)
             .ExecuteUpdateAsync(setters => setters
                 .SetProperty(dbTopic => dbTopic.Description, topic.Description));
@@ -33,7 +26,7 @@ public class TopicRepository : ITopicRepository
 
     public async Task<bool> DeleteTopicAsync(long id)
     {
-        var result = await _context.Topics
+        var result = await context.Topics
             .Where(topic => topic.Id == id)
             .ExecuteDeleteAsync();
 
@@ -42,7 +35,7 @@ public class TopicRepository : ITopicRepository
 
     public async Task<Topic> FindTopicAsync(long id)
     {
-        var topic = await _context.Topics.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)
+        var topic = await context.Topics.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)
             ?? throw new KeyNotFoundException("Topic not found.");
 
         return topic;
@@ -50,6 +43,6 @@ public class TopicRepository : ITopicRepository
 
     public async Task<List<Topic>> GetAllTopicsAsync()
     {
-        return await _context.Topics.AsNoTracking().ToListAsync();
+        return await context.Topics.AsNoTracking().ToListAsync();
     }
 }
