@@ -1,28 +1,33 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.DTOs.Post;
 using PersonalBlog.Services;
-using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalBlog.Controllers;
 
 [ApiController]
 [Route("api/postagens")]
-public class PostsController : ControllerBase
+public class PostsController(IPostService postService) : ControllerBase
 {
-    private readonly IPostService _postService;
+    private readonly IPostService postService;
 
-    public PostsController(IPostService postService)
-    {
-        _postService = postService;
-    }
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<List<PostResponseDto>>> GetAllPosts()
+    public async Task<ActionResult<List<PostResponseDto>>> GetPosts(
+        [FromQuery] long? userId,
+        [FromQuery] long? topicId)
     {
-        var posts = await _postService.GetAllPostsAsync();
+        try
+        {
+            var posts = await postService.GetPostsAsync(userId, topicId);
 
-        return Ok(posts);
+            return Ok(posts);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new { message = exception.Message });
+        }
     }
 
     [AllowAnonymous]
@@ -31,7 +36,7 @@ public class PostsController : ControllerBase
     {
         try
         {
-            var post = await _postService.FindPostAsync(id);
+            var post = await postService.FindPostAsync(id);
 
             return Ok(post);
         }
@@ -51,7 +56,7 @@ public class PostsController : ControllerBase
     {
         try
         {
-            var post = await _postService.CreatePostAsync(postDto);
+            var post = await postService.CreatePostAsync(postDto);
 
             return CreatedAtAction(
                 nameof(FindPostById),
@@ -77,7 +82,7 @@ public class PostsController : ControllerBase
         {
             postDto.Id = id;
 
-            var post = await _postService.UpdatePostAsync(postDto);
+            var post = await postService.UpdatePostAsync(postDto);
 
             return Ok(post);
         }
@@ -97,7 +102,7 @@ public class PostsController : ControllerBase
     {
         try
         {
-            await _postService.DeletePostAsync(id);
+            await postService.DeletePostAsync(id);
 
             return NoContent();
         }

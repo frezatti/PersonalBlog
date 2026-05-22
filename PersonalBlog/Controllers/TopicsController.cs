@@ -1,12 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.DTOs.Topic;
 using PersonalBlog.Services;
-using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalBlog.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/temas")]
 public class TopicsController : ControllerBase
 {
     private readonly ITopicService _topicService;
@@ -24,6 +24,7 @@ public class TopicsController : ControllerBase
 
         return Ok(topics);
     }
+
     [AllowAnonymous]
     [HttpGet("{id:long}")]
     public async Task<ActionResult<ResponseTopicDto>> FindTopicById(long id)
@@ -34,13 +35,17 @@ public class TopicsController : ControllerBase
 
             return Ok(topic);
         }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new { message = exception.Message });
+        }
         catch (KeyNotFoundException exception)
         {
             return NotFound(new { message = exception.Message });
         }
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<ResponseTopicDto>> CreateTopic([FromBody] CreateTopicDto topicDto)
     {
@@ -60,7 +65,7 @@ public class TopicsController : ControllerBase
         }
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:long}")]
     public async Task<ActionResult<ResponseTopicDto>> UpdateTopic(long id, [FromBody] UpdateTopicDto topicDto)
     {
@@ -82,7 +87,7 @@ public class TopicsController : ControllerBase
         }
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> DeleteTopic(long id)
     {
@@ -91,6 +96,10 @@ public class TopicsController : ControllerBase
             await _topicService.DeleteTopicAsync(id);
 
             return NoContent();
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new { message = exception.Message });
         }
         catch (KeyNotFoundException exception)
         {

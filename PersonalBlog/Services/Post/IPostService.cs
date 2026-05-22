@@ -9,4 +9,5 @@ public interface IPostService
     Task DeletePostAsync(long id);
     Task<PostResponseDto> FindPostAsync(long id);
     Task<List<PostResponseDto>> GetAllPostsAsync();
+    Task<List<PostResponseDto>> GetPostsAsync(long? userId, long? topicId);
 }

@@ -11,9 +11,9 @@ public class PostResponseDto
     public string? UserName { get; set; }
 
     public long TopicId { get; set; }
-    // public string? TopicDescription { get; set; }
+    public string? TopicDescription { get; set; }
 
-    // public string? AiSummary { get; set; }
-    // public string? AiTags { get; set; }
-    // public string? AiCategory { get; set; }
+    public string? AiSummary { get; set; }
+    public string? AiTags { get; set; }
+    public string? AiCategory { get; set; }
 }

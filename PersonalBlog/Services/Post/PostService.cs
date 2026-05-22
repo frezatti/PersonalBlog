@@ -27,6 +27,19 @@ public class PostService(
         return posts.Select(ToResponseDto).ToList();
     }
 
+    public async Task<List<PostResponseDto>> GetPostsAsync(long? userId, long? topicId)
+    {
+        if (userId is not null && userId <= 0)
+            throw new ArgumentException("The user id is invalid.");
+
+        if (topicId is not null && topicId <= 0)
+            throw new ArgumentException("The topic id is invalid.");
+
+        var posts = await postRepository.GetPostsAsync(userId, topicId);
+
+        return posts.Select(ToResponseDto).ToList();
+    }
+
     public async Task<PostResponseDto> CreatePostAsync(CreatePostDto postDto)
     {
         if (string.IsNullOrWhiteSpace(postDto.Title))
@@ -54,7 +67,9 @@ public class PostService(
 
         var createdPost = await postRepository.CreatePostAsync(post);
 
-        return ToResponseDto(createdPost);
+        var postWithRelations = await postRepository.FindPostAsync(createdPost.Id);
+
+        return ToResponseDto(postWithRelations);
     }
 
     public async Task<PostResponseDto> UpdatePostAsync(UpdatePostDto postDto)
@@ -86,7 +101,9 @@ public class PostService(
         if (!updated)
             throw new KeyNotFoundException("Post not found.");
 
-        return ToResponseDto(post);
+        var updatedPost = await postRepository.FindPostAsync(postDto.Id);
+
+        return ToResponseDto(updatedPost);
     }
 
     public async Task DeletePostAsync(long id)
@@ -110,7 +127,11 @@ public class PostService(
             CreatedAt = post.CreatedAt,
             UserId = post.UserId,
             UserName = post.User?.Name,
-            TopicId = post.TopicId
+            TopicId = post.TopicId,
+            TopicDescription = post.Topic?.Description,
+            AiSummary = post.AiSummary,
+            AiTags = post.AiTags,
+            AiCategory = post.AiCategory
         };
     }
 }
