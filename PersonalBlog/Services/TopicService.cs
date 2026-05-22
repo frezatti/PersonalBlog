@@ -44,7 +44,7 @@ public class TopicService : ITopicService
 
     public async Task<ResponseTopicDto> UpdateTopicAsync(UpdateTopicDto topicDto)
     {
-        if (topicDto.Id == 0)
+        if (topicDto.Id <= 0)
             throw new ArgumentException("The topic id cannot be 0.");
 
         if (string.IsNullOrWhiteSpace(topicDto.Description))

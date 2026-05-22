@@ -42,7 +42,7 @@ public class TopicRepository : ITopicRepository
 
     public async Task<Topic> FindTopicAsync(long id)
     {
-        var topic = await _context.Topics.FindAsync(id)
+        var topic = await _context.Topics.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)
             ?? throw new KeyNotFoundException("Topic not found.");
 
         return topic;
@@ -50,6 +50,6 @@ public class TopicRepository : ITopicRepository
 
     public async Task<List<Topic>> GetAllTopicsAsync()
     {
-        return await _context.Topics.ToListAsync();
+        return await _context.Topics.AsNoTracking().ToListAsync();
     }
 }
