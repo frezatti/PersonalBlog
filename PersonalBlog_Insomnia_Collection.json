@@ -1,0 +1,639 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-05-22T21:15:06.005189+00:00",
+  "__export_source": "chatgpt.generated",
+  "resources": [
+    {
+      "_id": "wrk_460fdacab37b",
+      "parentId": null,
+      "modified": 1779484506003,
+      "created": 1779484506003,
+      "name": "PersonalBlog API",
+      "description": "Insomnia collection for testing the PersonalBlog ASP.NET Core Web API controllers.",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_39b8476d8aef",
+      "parentId": "wrk_460fdacab37b",
+      "modified": 1779484506003,
+      "created": 1779484506003,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:5229",
+        "https_base_url": "https://localhost:7272",
+        "token": "",
+        "user_id": 1,
+        "admin_user_id": 1,
+        "topic_id": 1,
+        "post_id": 1,
+        "email": "adriel@example.com",
+        "password": "12345678"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "https_base_url",
+          "token",
+          "user_id",
+          "admin_user_id",
+          "topic_id",
+          "post_id",
+          "email",
+          "password"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 0,
+      "_type": "environment"
+    },
+    {
+      "_id": "fld_5b147bad3f8c",
+      "parentId": "wrk_460fdacab37b",
+      "modified": 1779484506003,
+      "created": 1779484506003,
+      "name": "01 - Auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 100,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_98f7ac24d1ad",
+      "parentId": "wrk_460fdacab37b",
+      "modified": 1779484506003,
+      "created": 1779484506003,
+      "name": "02 - Users / Usuarios",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 200,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_83be293d2483",
+      "parentId": "wrk_460fdacab37b",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "name": "03 - Topics / Temas",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 300,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_b30fc7407c28",
+      "parentId": "wrk_460fdacab37b",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "name": "04 - Posts / Postagens",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 400,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_25b88daa548e",
+      "parentId": "fld_5b147bad3f8c",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/usuarios/login",
+      "name": "Login user",
+      "description": "After running this request, copy the 'token' value from the response into the environment variable named token.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 101,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_18e9037a4fa7",
+      "parentId": "fld_98f7ac24d1ad",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/usuarios",
+      "name": "Create user / Register",
+      "description": "Public endpoint. Creates a normal user. To test admin-only endpoints, promote this user in PostgreSQL and login again.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Adriel Frezatti\",\n  \"email\": \"{{ _.email }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 201,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_07bc3e178a25",
+      "parentId": "fld_98f7ac24d1ad",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/usuarios",
+      "name": "Get all users - Admin only",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 202,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_1f2a57f8d401",
+      "parentId": "fld_98f7ac24d1ad",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/usuarios/{{ _.user_id }}",
+      "name": "Get user by id - Admin only",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 203,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_82f7b6fd3ec6",
+      "parentId": "fld_98f7ac24d1ad",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/usuarios/{{ _.user_id }}",
+      "name": "Update user - Admin only",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Adriel Updated\",\n  \"email\": \"{{ _.email }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 204,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_08d62d1fcfff",
+      "parentId": "fld_98f7ac24d1ad",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/usuarios/{{ _.user_id }}",
+      "name": "Delete user - Admin only",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 205,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_04583bf44d43",
+      "parentId": "fld_83be293d2483",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/temas",
+      "name": "Get all topics",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 301,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_1ba8f25fa2b3",
+      "parentId": "fld_83be293d2483",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/temas/{{ _.topic_id }}",
+      "name": "Get topic by id",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 302,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_919114adb658",
+      "parentId": "fld_83be293d2483",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/temas",
+      "name": "Create topic - Admin only",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"description\": \"Technology\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 303,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_e974747beaf9",
+      "parentId": "fld_83be293d2483",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/temas/{{ _.topic_id }}",
+      "name": "Update topic - Admin only",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"description\": \"Programming\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 304,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_5ae4b953a11a",
+      "parentId": "fld_83be293d2483",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/temas/{{ _.topic_id }}",
+      "name": "Delete topic - Admin only",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 305,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_5d62335e2ed3",
+      "parentId": "fld_b30fc7407c28",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/postagens",
+      "name": "Get all posts",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 401,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_1df17f16b0f4",
+      "parentId": "fld_b30fc7407c28",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/postagens?userId={{ _.user_id }}",
+      "name": "Get posts by userId",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 402,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_078f75817fb0",
+      "parentId": "fld_b30fc7407c28",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/postagens?topicId={{ _.topic_id }}",
+      "name": "Get posts by topicId",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 403,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_87843da69d01",
+      "parentId": "fld_b30fc7407c28",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/postagens?userId={{ _.user_id }}&topicId={{ _.topic_id }}",
+      "name": "Get posts by userId and topicId",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 404,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_db48bd774283",
+      "parentId": "fld_b30fc7407c28",
+      "modified": 1779484506004,
+      "created": 1779484506004,
+      "url": "{{ _.base_url }}/api/postagens/{{ _.post_id }}",
+      "name": "Get post by id",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 405,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_1cd3e4434c17",
+      "parentId": "fld_b30fc7407c28",
+      "modified": 1779484506005,
+      "created": 1779484506005,
+      "url": "{{ _.base_url }}/api/postagens",
+      "name": "Create post - Auth required",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"My first post\",\n  \"content\": \"This is the content of my first post.\",\n  \"topicId\": \"{{ _.topic_id }}\",\n  \"userId\": \"{{ _.user_id }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 406,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_d987d445ac40",
+      "parentId": "fld_b30fc7407c28",
+      "modified": 1779484506005,
+      "created": 1779484506005,
+      "url": "{{ _.base_url }}/api/postagens/{{ _.post_id }}",
+      "name": "Update post - Auth required",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"My updated post\",\n  \"content\": \"This is the updated content of my post.\",\n  \"topicId\": \"{{ _.topic_id }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 407,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_31ecca169570",
+      "parentId": "fld_b30fc7407c28",
+      "modified": 1779484506005,
+      "created": 1779484506005,
+      "url": "{{ _.base_url }}/api/postagens/{{ _.post_id }}",
+      "name": "Delete post - Auth required",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 408,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    }
+  ]
+}

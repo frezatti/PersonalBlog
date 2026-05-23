@@ -64,7 +64,9 @@ public class UsersController(IUserService userService, IAuthService authService)
         }
     }
 
+    [AllowAnonymous]
     [HttpPost]
+    [HttpPost("cadastrar")]
     public async Task<ActionResult<ResponseUserDto>> CreateUser([FromBody] CreateUserDto userDto)
     {
         try
