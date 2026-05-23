@@ -9,8 +9,6 @@ namespace PersonalBlog.Controllers;
 [Route("api/postagens")]
 public class PostsController(IPostService postService) : ControllerBase
 {
-    private readonly IPostService postService;
-
 
     [AllowAnonymous]
     [HttpGet]
@@ -47,6 +45,22 @@ public class PostsController(IPostService postService) : ControllerBase
         catch (KeyNotFoundException exception)
         {
             return NotFound(new { message = exception.Message });
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("filtro")]
+    public async Task<ActionResult<List<PostResponseDto>>> GetPostsByFilter([FromQuery] long? autor, [FromQuery] long? tema)
+    {
+        try
+        {
+            var posts = await postService.GetPostsAsync(autor, tema);
+
+            return Ok(posts);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new { message = exception.Message });
         }
     }
 
