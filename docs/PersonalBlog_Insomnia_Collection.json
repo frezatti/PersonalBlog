@@ -1,0 +1,695 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-05-25T22:50:00.000Z",
+  "__export_source": "ChatGPT - gerado a partir dos controllers atuais do repositório",
+  "resources": [
+    {
+      "_id": "wrk_personalblog_api",
+      "parentId": null,
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "name": "PersonalBlog API",
+      "description": "Coleção para testar os controllers da API PersonalBlog: usuários, autenticação, temas e postagens.",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_personalblog_base",
+      "parentId": "wrk_personalblog_api",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:5229",
+        "https_base_url": "https://localhost:7272",
+        "token": "",
+        "user_id": 1,
+        "admin_user_id": 1,
+        "topic_id": 1,
+        "post_id": 1,
+        "name": "Adriel Frezatti",
+        "email": "adriel@example.com",
+        "password": "12345678"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "https_base_url",
+          "token",
+          "user_id",
+          "admin_user_id",
+          "topic_id",
+          "post_id",
+          "name",
+          "email",
+          "password"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 0,
+      "_type": "environment"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_personalblog_api",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "name": "01 - Autenticação",
+      "description": "Login e obtenção do token JWT.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 100,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_users",
+      "parentId": "wrk_personalblog_api",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "name": "02 - Usuários",
+      "description": "Cadastro e endpoints administrativos de usuários.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 200,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_topics",
+      "parentId": "wrk_personalblog_api",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "name": "03 - Temas",
+      "description": "CRUD de temas. Escrita exige usuário Admin.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 300,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_posts",
+      "parentId": "wrk_personalblog_api",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "name": "04 - Postagens",
+      "description": "CRUD e filtros de postagens.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 400,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_auth_login",
+      "parentId": "fld_auth",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/usuarios/login",
+      "name": "Login - POST /api/usuarios/login",
+      "description": "Depois de executar, copie o campo token da resposta e cole na variável de ambiente token.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 101,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_users_create_default",
+      "parentId": "fld_users",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/usuarios",
+      "name": "Cadastrar usuário - POST /api/usuarios",
+      "description": "Rota pública de cadastro. Cria usuário comum.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"{{ _.name }}\",\n  \"email\": \"{{ _.email }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 201,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_users_create_cadastrar",
+      "parentId": "fld_users",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/usuarios/cadastrar",
+      "name": "Cadastrar usuário - POST /api/usuarios/cadastrar",
+      "description": "Rota pública de cadastro compatível com o enunciado do projeto.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"{{ _.name }}\",\n  \"email\": \"{{ _.email }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 202,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_users_get_all",
+      "parentId": "fld_users",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/usuarios",
+      "name": "Listar usuários - GET /api/usuarios - Admin",
+      "description": "Requer token de usuário Admin.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 203,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_users_get_by_id",
+      "parentId": "fld_users",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/usuarios/{{ _.user_id }}",
+      "name": "Buscar usuário por ID - GET /api/usuarios/{id} - Admin",
+      "description": "Requer token de usuário Admin.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 204,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_users_update",
+      "parentId": "fld_users",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/usuarios/{{ _.user_id }}",
+      "name": "Atualizar usuário - PUT /api/usuarios/{id} - Admin",
+      "description": "Requer token de usuário Admin.",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"{{ _.name }} Atualizado\",\n  \"email\": \"{{ _.email }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 205,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_users_delete",
+      "parentId": "fld_users",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/usuarios/{{ _.user_id }}",
+      "name": "Remover usuário - DELETE /api/usuarios/{id} - Admin",
+      "description": "Requer token de usuário Admin. Use com cuidado para não remover o usuário usado nos testes.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 206,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_topics_get_all",
+      "parentId": "fld_topics",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/temas",
+      "name": "Listar temas - GET /api/temas",
+      "description": "Rota pública.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 301,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_topics_get_by_id",
+      "parentId": "fld_topics",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/temas/{{ _.topic_id }}",
+      "name": "Buscar tema por ID - GET /api/temas/{id}",
+      "description": "Rota pública.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 302,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_topics_create",
+      "parentId": "fld_topics",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/temas",
+      "name": "Criar tema - POST /api/temas - Admin",
+      "description": "Requer token de usuário Admin.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"description\": \"Tecnologia\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 303,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_topics_update",
+      "parentId": "fld_topics",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/temas/{{ _.topic_id }}",
+      "name": "Atualizar tema - PUT /api/temas/{id} - Admin",
+      "description": "Requer token de usuário Admin.",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"description\": \"Programação\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 304,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_topics_delete",
+      "parentId": "fld_topics",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/temas/{{ _.topic_id }}",
+      "name": "Remover tema - DELETE /api/temas/{id} - Admin",
+      "description": "Requer token de usuário Admin.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 305,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_get_all",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens",
+      "name": "Listar postagens - GET /api/postagens",
+      "description": "Rota pública.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 401,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_filter_user",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens?userId={{ _.user_id }}",
+      "name": "Filtrar por userId - GET /api/postagens?userId={id}",
+      "description": "Rota pública.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 402,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_filter_topic",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens?topicId={{ _.topic_id }}",
+      "name": "Filtrar por topicId - GET /api/postagens?topicId={id}",
+      "description": "Rota pública.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 403,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_filter_user_topic",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens?userId={{ _.user_id }}&topicId={{ _.topic_id }}",
+      "name": "Filtrar por userId e topicId - GET /api/postagens?userId={id}&topicId={id}",
+      "description": "Rota pública.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 404,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_filter_docx",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens/filtro?autor={{ _.user_id }}&tema={{ _.topic_id }}",
+      "name": "Filtro do enunciado - GET /api/postagens/filtro?autor={id}&tema={id}",
+      "description": "Rota pública compatível com o enunciado.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 405,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_get_by_id",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens/{{ _.post_id }}",
+      "name": "Buscar postagem por ID - GET /api/postagens/{id}",
+      "description": "Rota pública.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 406,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_create",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens",
+      "name": "Criar postagem - POST /api/postagens - Autenticado",
+      "description": "Requer token JWT. O userId e topicId precisam existir no banco.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"Minha primeira postagem\",\n  \"content\": \"Conteúdo da minha primeira postagem.\",\n  \"topicId\": {{ _.topic_id }},\n  \"userId\": {{ _.user_id }}\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 407,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_update",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens/{{ _.post_id }}",
+      "name": "Atualizar postagem - PUT /api/postagens/{id} - Autenticado",
+      "description": "Requer token JWT.",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"Postagem atualizada\",\n  \"content\": \"Conteúdo atualizado da postagem.\",\n  \"topicId\": {{ _.topic_id }}\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 408,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_posts_delete",
+      "parentId": "fld_posts",
+      "modified": 1779749400000,
+      "created": 1779749400000,
+      "url": "{{ _.base_url }}/api/postagens/{{ _.post_id }}",
+      "name": "Remover postagem - DELETE /api/postagens/{id} - Autenticado",
+      "description": "Requer token JWT.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 409,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    }
+  ]
+}
